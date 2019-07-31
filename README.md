@@ -6,6 +6,7 @@ The purpose of test designer is finding critical test scenarios by integrating D
 The selection's scenario has to satisfy two objective:
   1. distance of two car small enough
   2. Speed of second car get max. 
+  
 The steps of selection and creation's the testcases.
 1. Run beamNG.research on Gridmap to get position and rotation 
 2. Create a scenario as a vector of (position_car1, rotation_car1, position_car2, rotation_car2, speed_car2)
