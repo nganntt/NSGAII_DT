@@ -12,8 +12,8 @@ def launch (beamNGPath, car1, car2, speed_car2):
     crash = False
     dist_2car = 20
     speed_car2 = int(speed_car2)
-    #bng = BeamNGpy('localhost', 64256, beamNG_path)
-    bng = BeamNGpy('localhost', 64256, home='D:/BeamNGReasearch/Unlimited_Version/trunk')
+    bng = BeamNGpy('localhost', 64256, beamNG_path)
+    #bng = BeamNGpy('localhost', 64256, home='D:/BeamNGReasearch/Unlimited_Version/trunk')
 
     scenario = Scenario('GridMap', 'example')
 
