@@ -1,0 +1,30 @@
+//--- OBJECT WRITE BEGIN
+$ThisPrefab = new SimGroup() {
+    canSave = "1";
+    canSaveDynamicFields = "1";
+    groupPosition = "0.000000 0.000000 0.000000";
+
+    
+    new BeamNGVehicle(ego_vehicle) {
+        JBeam = "etk800";
+        color = "Red";
+        colorPalette0 = "Red";
+        colorPalette1 = "Red";
+        renderDistance = "500";
+        renderFade = "0.1";
+        dataBlock = "default_vehicle";
+        position = "-4.270055770874023 -115.30198669433594 0.20322345197200775";
+        rotationMatrix = "0.999963584419681 -0.00018589099550997968 -0.008532014948490225 5.598545883550889e-05 0.9998841161975562 -0.015223371553636091 0.00853385611384861 0.01522233951695487 0.999847715244406";
+        scale = "1 1 1";
+        canSave = "1";
+        canSaveDynamicFields = "1";
+        annotation = "CAR";
+        licenseText = "PYTHON";
+        
+    };
+    
+
+    
+
+    
+};
