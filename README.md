@@ -14,7 +14,7 @@ The steps of selection and creation's the testcases.
 4. Train the decision tree (DT) to narrow down the regrions of critical scenarios
 5. Get the scenarios from DT to generate the offspring and next generation
 6. Having final population after many generating process
-7. Running testcase automatic.
+7. Running testcase automatically.
 
 The result of step 1-6 is showed in "nsga2_dt_2generation_15population.txt"
 The result of step 7 is presented in "result_simuation_5testcase.txt"
