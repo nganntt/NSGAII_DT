@@ -7,3 +7,6 @@ import sys_output
 
 from beamngpy import BeamNGpy, Scenario, Vehicle
 from beamngpy.sensors import Electrics
+
+
+# only create roat with x,y axis 
