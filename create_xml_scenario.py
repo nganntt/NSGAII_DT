@@ -34,7 +34,7 @@ def load_xml_criteria(distance, speed2):
     return testcase_crit
 
 
-def genrate_tcs(num_tc):
+def generate_tcs(num_tc):
     dist = []
     speed = []
     for i in range(num_tc):
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     # generate xml file
     num_tc = 10
-    genrate_tcs(num_tc)
+    generate_tcs(num_tc)
 
     service = get_service()
 
