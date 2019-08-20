@@ -8,7 +8,6 @@
 import os
 import random
 from threading import Thread
-from typing import List
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -74,12 +73,18 @@ if __name__ == "__main__":
             exit(1)
         sid = SimulationID()
         sid.sid = sids.sids[0]
-        ego_requests = ["egoPosition", "egoSpeed", "egoSteeringAngle", "egoFrontCamera", "egoLidar", "egoLaneDist"]
-        non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
-                            "nonEgoLaneDist"]
-        ego_vehicle = Thread(target=_handle_vehicle, args=(sid, "ego", ego_requests))
-        ego_vehicle.start()
-        non_ego_vehicle = Thread(target=_handle_vehicle, args=(sid, "nonEgo", non_ego_requests))
-        non_ego_vehicle.start()
-        ego_vehicle.join()
-        non_ego_vehicle.join()
+
+        ego_vid = VehicleID()
+        ego_vid.vid = "ego"
+        ego_vehicle_simulation_thread = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
+        ego_vehicle_simulation_thread.start()
+
+        non_ego_vid = VehicleID()
+        non_ego_vid.vid = "nonEgo"
+        non_ego_simulation_thread = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
+        non_ego_simulation_thread.start()
+
+        ego_vehicle_simulation_thread.join()
+        non_ego_simulation_thread.join()
+
+        test_result = service.get_result(sid)
