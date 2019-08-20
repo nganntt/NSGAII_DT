@@ -43,7 +43,7 @@ def genrate_tcs(num_tc):
         temp_speed = random.randint(10, 80)
         speed.append(temp_speed)
 
-        file_name = TESTCASE_DIR + "\criteria" + str(i) + ".xml"
+        file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
 
         xml_data = load_xml_criteria(temp_dist, temp_speed)
         # print (xml_data)
@@ -65,8 +65,9 @@ if __name__ == "__main__":
 
     # Send tests
     for i in range(num_tc):
-        sids = service.run_tests("admin", "admin", TESTCASE_DIR + '\criteria' + str(i) + ".xml",
-                                 TEMP_DIR + "\environmentA.dbe.xml")
+        dbc_file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
+        dbe_file_name = os.path.join(TEMP_DIR, "environmentA.dbe.xml")
+        sids = service.run_tests("admin", "admin", dbc_file_name, dbe_file_name)
 
         # Interact with a simulation
         if not sids:
