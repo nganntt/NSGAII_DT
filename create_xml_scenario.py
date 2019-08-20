@@ -5,13 +5,18 @@
 # We now assume we have a file in the same dir as this one called
 # test_template.html
 #
-
-from jinja2 import Environment, FileSystemLoader
 import os
 import random
+from threading import Thread
+from typing import List
+
+from jinja2 import Environment, FileSystemLoader
 
 # Capture our current directory
 # print ("print current file",os.path.abspath(__file__))
+from AIExchangeService import get_service
+from aiExchangeMessages_pb2 import SimulationID, VehicleID
+
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_DIR = os.path.join(CURRENT_DIR, 'templates')
 TESTCASE_DIR = os.path.join(CURRENT_DIR, 'testcases')
@@ -55,10 +60,6 @@ if __name__ == "__main__":
     # generate xml file
     num_tc = 10
     genrate_tcs(num_tc)
-
-    from AIExchangeService import get_service
-    from aiExchangeMessages_pb2 import SimStateResponse, Control, SimulationID, VehicleID, DataRequest
-    from keyboard import is_pressed
 
     service = get_service()
 
