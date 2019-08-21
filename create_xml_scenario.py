@@ -21,7 +21,7 @@ TEMP_DIR = os.path.join(CURRENT_DIR, 'templates')
 TESTCASE_DIR = os.path.join(CURRENT_DIR, 'testcases')
 
 
-def load_xml_criteria(distance, speed2):
+def load_xml_criteria(distance, speed2, testcaseID):
     pos1 = (0, 0)
     # Create the jinja2 environment.
     # Notice the use of trim_blocks, which greatly helps control whitespace.
@@ -29,13 +29,19 @@ def load_xml_criteria(distance, speed2):
                          trim_blocks=True)
 
     template = j2_env.get_template('criteriaA.dbc.xml')
-    testcase_crit = template.render(pos1x=0, pos1y=0, pos2x=0, pos2y=distance, speedcar2=speed2)
+    nameTC = "Testcase" + str(testcaseID)
+    testcase_crit = template.render(tcid=nameTC, pos1x=0, pos1y=0, pos2x=0, pos2y=distance, speedcar2=speed2)
     return testcase_crit
 
 
 def generate_tcs(num_tc):
     dist = []
     speed = []
+    #delete all old xml file
+    filelist = [ f for f in os.listdir(TESTCASE_DIR) if f.endswith(".xml") ]
+    for f in filelist:
+        os.remove(os.path.join(TESTCASE_DIR, f))
+    
     for i in range(num_tc):
         temp_dist = random.randint(10, 60)
         dist.append(temp_dist)
@@ -43,9 +49,10 @@ def generate_tcs(num_tc):
         speed.append(temp_speed)
 
         file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
+        print ("file name",file_name)
 
-        xml_data = load_xml_criteria(temp_dist, temp_speed)
-        # print (xml_data)
+        xml_data = load_xml_criteria(temp_dist, temp_speed, i)
+        #print (xml_data)
         with open(file_name, 'w') as f:
             f.write(str(xml_data))
 
