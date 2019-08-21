@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<criteria xmlns="http://drivebuild.com"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://drivebuild.com ../drivebuild.xsd">
+    <author>Ngan Nguyen</author>
+    <version>1</version>
+    <name>Testcase0</name>
+    <environment>environmentA.dbe.xml</environment>
+    <stepsPerSecond>10</stepsPerSecond> <!-- Defines in how many steps the simulation divides each second -->
+    <aiFrequency>50</aiFrequency> <!-- Defines how many steps to simulate before requesting AIs and cars in TRAINING mode -->
+
+    <participants>
+        <participant id="ego" model="ETK800"> <!-- Definition of a participant -->
+            <initialState x="0" y="0" movementMode="AUTONOMOUS" orientation="90"/>
+            <ai>
+                <position id="egoPosition"/>
+                <speed id="egoSpeed"/>
+                <camera id="egoFrontCamera" width="800" height="600" fov="60" direction="FRONT"/>
+            </ai>
+        </participant>
+        <participant id="nonEgo" model="ETK800">
+            <initialState x="0" y="36" movementMode="TRAINING" orientation="90"/>
+            <ai>
+                <position id="nonEgoPosition"/>
+                <speed id="nonEgoSpeed"/>
+                <steeringAngle id="nonEgoSteeringAngle"/>
+            </ai>
+            <movement>
+                <waypoint x="0" y="36" movementMode="MANUAL" tolerance="1" speedLimit= "71"/>
+                <waypoint x="0" y="60" movementMode="MANUAL" tolerance="1" speedLimit= "71" />
+                <waypoint x="0" y="80" movementMode="MANUAL" tolerance="1" speedLimit= "71" />
+                <waypoint x="0" y="150" movementMode="MANUAL" tolerance="1" speedLimit= "71"/>
+            </movement>
+        </participant>
+    </participants>
+
+    <success> <!-- If these criteria are met the test is considered successful -->
+            <scArea participant="ego" points="(0,90);(90,10);(10,120);(120,0)"/>
+    </success>
+
+    <failure> <!-- If these criteria are met the test is considered failed -->
+        <or>
+            <scDamage participant="ego"/>
+            <scLane participant="ego" onLane="offroad"/>
+        </or>
+    </failure>
+</criteria>
