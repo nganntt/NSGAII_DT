@@ -18,8 +18,7 @@ import pydotplus
 from sklearn.datasets import load_iris
 from sklearn import tree
 import collections
-
-
+from create_xml_scenario import generate_tcs
 
 
 def estimate_critical(dist, speed):
@@ -43,13 +42,59 @@ def pop_to_data_DT(pop):
     Return result a list of tuples(dist, speed, collistion_state): (5.520236587666433, 96, 1)
     """
     data = []
+    dist = list()
+    speed = list()
     for ind in pop:
-        dist = generate_data.distance_two_Car(ind[0], ind[1])
-        speed = ind[2]
-        state_scenario = estimate_critical(dist, speed)
-        data.append((dist,speed,state_scenario))
+        #dist = generate_data.distance_two_Car(ind[0], ind[1])
+        dist_tmp = ind[1][1]
+        speed_tmp = ind[2]
+        dist.append(dist_tmp)
+        speed.append(speed_tmp)
+    # generate TC with XML file
+    generate_tcs(len(pop), dist, speed)
     
+    #change result to 0 or 1 base on the result returns from DriveBuidl 
+    
+    
+    result = run_TC_DriveBuild(len(pop))
+    for i in rang(len(pop)):
+        data.append((dist[i], speed[i],result[i]))
     return data
+
+
+
+
+
+# def estimate_critical(dist, speed):
+    # """ 
+    # This function will calculate whether there is collision between two car1_pos_rot
+    # There are two condition make the crash scenario
+        # 1- Distance between two car smaller than 20 (or in range (10,30))
+        # 2. Speed of second car is larger than 20km/h
+    # """
+    # if dist < 20 and speed > 20:
+        # return 1
+    # else:
+        # return 0
+
+
+# def pop_to_data_DT(pop):
+    # """
+    # The function calulates the critical event with input of populuation
+    # each indiviual is list of [car1_pos_rot,car1_pos_rot, speed car2]
+    # The function return a set of (distance, speed, label) of each individual
+    # Return result a list of tuples(dist, speed, collistion_state): (5.520236587666433, 96, 1)
+    # """
+    # data = []
+
+    # for ind in pop:
+        # #dist = generate_data.distance_two_Car(ind[0], ind[1])
+        # dist = ind[1][1]
+        # speed = ind[2]
+        # state_scenario = estimate_critical(dist, speed)
+        # data.append((dist,speed,state_scenario))
+    
+    # return data
 
 def encode_dist(dist):
     """
