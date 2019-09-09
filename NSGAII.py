@@ -7,7 +7,6 @@ import traceback
 import inspect
 import sys_output
 from datetime import datetime
-import data_map
 
 import numpy
 
@@ -21,15 +20,14 @@ from deap.benchmarks.tools import diversity, convergence, hypervolume
 from deap import creator
 from deap import tools
 
-
 from random import choice, shuffle, randint, randrange
 from scipy.spatial import distance
-
 import decision_tree
-
 import generate_data
+import create_xml_scenario
 
-
+POS_FILE = "position.txt"
+ROT_FILE = "rotation.txt"
 
 def main(beamNG_path, num_gen, num_pop):
     #run beamNG to collect data
@@ -38,12 +36,13 @@ def main(beamNG_path, num_gen, num_pop):
     
     int_num_gent = int(num_gen)
     int_num_pop = int(num_pop)
-    print("\n Collect data from BeamNG.research with Grid Map. This process takes around 1 minute. BeamNG is running. Please wailt.... ")
-
-    (pos_beamNG ,rot_beamNG) = data_map.collect_data(beamNG_path)
+    # print("\n Collect data from BeamNG.research with Grid Map. This process takes around 1 minute. BeamNG is running. Please wailt.... ")
+    
+    
+    #(pos_beamNG ,rot_beamNG) = data_map.collect_data(beamNG_path)
    
     #run nsga2 algorithms
-    sys_output.print_title("  Finish collect data from BeamNG.research")
+    #sys_output.print_title("  Finish collect data from BeamNG.research")
     nsga2(int_num_gent,int_num_pop)
     sys_output.print_star_end("End the process of generation testcases from NSGAII_DT")
 
@@ -52,6 +51,8 @@ def main(beamNG_path, num_gen, num_pop):
 #['96.72881317138672, -209.87376403808594, 0.20368465781211853,-0.3515154719352722, -0.9361792802810669, -0.0022529030684381723',
 # '74.01776123046875, -233.57073974609375, 0.20380012691020966,-0.9138180613517761, -0.40611740946769714, -0.002287991577759385'
 #, 38]
+
+
 def print_pop(pop):
         for id, ind in enumerate(pop):
             print("\n "+ str(id) + "   " +str(ind))
@@ -64,6 +65,33 @@ def file_name():
     filename = module.__file__
     return filename
 
+    
+def write_data(name_file,arg):
+    file = name_file 
+    with open(file, 'w') as f:
+        for line in arg:
+            strLine = str(line)
+            f.write(str(strLine[1:-1]) +"\n")
+            
+            
+      
+            
+def gen_pop(num_ind):
+    dist = []
+    speed = []
+    for _ in range(num_ind):
+        temp_dist = random.randint(10, 60)
+        dist.append(temp_dist)
+        temp_speed = random.randint(10, 80)
+        speed.append(temp_speed)
+    
+    dist_speed_list = list(zip(dist, speed))
+    pop = []
+    for i in range(num_ind):
+        ind = (0,0,0,0,dist_speed_list[i][0],0,dist_speed_list[i][1])
+        pop.append(ind)
+    write_data("population.txt",pop)
+    return pop
 
 def nsga2(number_gen, num_pop):
 
@@ -72,41 +100,52 @@ def nsga2(number_gen, num_pop):
 
     toolbox = base.Toolbox()
 
-    POS_FILE = "position.txt"
-    ROT_FILE = "rotation.txt"
+    # POS_FILE = "position.txt"
+    # ROT_FILE = "rotation.txt"
 
     # get position and rotation from data files
-    pos = generate_data.getData(POS_FILE) 
-    rot = generate_data.getData(ROT_FILE)
-    initial_pos_rot = generate_data.get_pos_rot_from_list(pos,rot)
+    # pos = generate_data.getData(POS_FILE) 
+    # rot = generate_data.getData(ROT_FILE)
+    #initial_pos_rot = generate_data.get_pos_rot_from_list(pos,rot)
+    initial_pos_rot = gen_pop(num_pop)
     now = datetime.now()
     path_dir = os.getcwd()  
 
     def get_scenario_State():
-        car1_list = []
-
-        minLen = min(len(pos),len(rot))
-        for i in range(minLen):
-            state = pos[i] +','+ rot [i]
-            car1_list.append(state)
+    
+         
+        temp_dist = random.randint(10, 60)
         
-        #speed of car
+        temp_speed = random.randint(10, 80)
+        
+        # car1_list = []
+
+        # minLen = min(len(pos),len(rot))
+        # for i in range(minLen):
+            # state = pos[i] +','+ rot [i]
+            # car1_list.append(state)
+        
+        # #speed of car
         scenario = []
-        random_index_pos_list = randrange(0,minLen-1)
-        car1 = car1_list[random_index_pos_list]
-        #car2 = car2_list[random_index_pos_list]
-        car2 = generate_data.get_pos_rot_secondCar(car1_list,random_index_pos_list)    
-        speed = randint(10,35)
+        # random_index_pos_list = randrange(0,minLen-1)
+        # car1 = car1_list[random_index_pos_list]
+        # #car2 = car2_list[random_index_pos_list]
+        # car2 = generate_data.get_pos_rot_secondCar(car1_list,random_index_pos_list)    
+        
+        car1 = [0,0,0,0,90,0]  #rotation need to be checked later, 3 last element is rotation
+        car2 = [0,temp_dist,0,0,90,0] #rotation need to be checked later, 3 last element is rotation
         scenario.append(car1) 
         scenario.append(car2)    
-        scenario.append(speed)    
-      
+        scenario.append(temp_speed)    
+       
         return scenario
 
 
     # evaluation function with two parameter of distance(car1, car2) and speed of car2
     def evaluation_collision(individual):
-        dist = generate_data.distance_two_Car(individual[0], individual[1])
+        
+        dist = individual[1][1] 
+        print("distance of 2 car",dist )
         speed = individual[2]
         if (dist not in range(10,50)):  
             return 10000, 0        # Ensure distance of two car too far and speed already checked in range(20,100)
@@ -154,8 +193,8 @@ def nsga2(number_gen, num_pop):
     toolbox.register("select", tools.selNSGA2)
 
 
-    NGEN = int(number_gen)
-    MU = int(num_pop)      
+    NGEN = int(number_gen)  #number of generation
+    MU = int(num_pop)       #number of population
     CXPB = 0.9
     print("=========================== START NSGAII ====================================================== ")
     print("Number of Genaration: " , NGEN)
@@ -170,7 +209,7 @@ def nsga2(number_gen, num_pop):
         Each indivudual has 2 car (12 parameters, 6 for each car) and state of scenarios \n\
         (x1,y1,z1,e1,u1,v1,  x2,y2,z2,e2,u2,v2,   state )\n")
     print("-----------------------------------------------------------------------------------------------")
-    print_pop(pop)
+    
 
     # Evaluate the individuals with an invalid fitness
     invalid_ind = [ind for ind in pop if not ind.fitness.valid]
@@ -180,27 +219,24 @@ def nsga2(number_gen, num_pop):
 
     # This is just to assign the crowding distance to the individuals
     pop = toolbox.select(pop, len(pop))
+    print("/n First generation: /n")
+    print_pop(pop)
+    
     #Intergration DT in select population
-   
     record = stats.compile(pop)
     #logbook.record(gen=0, evals=len(invalid_ind), **record)
     
-    
     # Begin the generational process
-    
     print(str( sys_output.trace_func(str(file_name()), str(sys._getframe().f_code.co_name))))
     for gen in range(1, NGEN+1):
         # Vary the population
-        sys_output.print_title("ENTER LOOP OF GENERATION:  " + str(gen)  )
-        
-       
+        sys_output.print_title("ENTER LOOP OF GENERATION WITH DECISION TREE:  " + str(gen))
         sys_output.print_sub_tit("1. Select individuals from Decision Tree")
-       
+
         # select population from decision tree
         pop_DT = select_pop_DT(pop)
-        print ("\n\npopulation is select for generation: ")
+        print ("\n\n Population is select for generation: ")
         print_pop(pop_DT[1])
-        
         
         pop_DT_new = select_gen_from_pop_DtPop(MU,pop)
         pop = toolbox.select(pop_DT_new, MU)
@@ -208,9 +244,7 @@ def nsga2(number_gen, num_pop):
         
         #offspring = tools.selTournamentDCD(pop, len(pop))
         offspring = tools.selRandom(pop, len(pop))
-        
         offspring = [toolbox.clone(ind) for ind in offspring]
-        
         for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
             if random.random() <= CXPB:
                 toolbox.mate(ind1, ind2)
@@ -252,15 +286,14 @@ def nsga2(number_gen, num_pop):
     return pop   
 
 
-
 def select_pop_DT(pop):
     """
     the population are select from critical situation by DT
     
     """
     new_pop = []
-
-    data = decision_tree.convert_dataFrame(pop)
+    #change estimate funciton  --> Run DriveBuild in decision_tree.py
+    data = decision_tree.convert_dataFrame(pop)   
     now = datetime.now()
     date_time = now.strftime("%m_%d_%Y__%H%M%S")
     path_dir = os.getcwd()   
@@ -268,14 +301,16 @@ def select_pop_DT(pop):
 
     data.to_csv(r'decision_tree_data.cvs')
     print("\n Data to build the tree is save in " , file_name_cvs )
-
+    print("\n\n \n Run test case on DriveBuild to get the results for failure for success of each testcase \n \
+            This will be updated later \n \n \n")
+    
     print("\nc. Train decision tree and select critical events")
+    #get leaf which contains the critical situations
     pop_idx = decision_tree.get_critical_sample_DT(data)
     
     #print("index of decision tree", pop_idx)
     for i in pop_idx:
         new_pop.append(pop[i])
-    
     return pop_idx, new_pop
 
 

@@ -21,7 +21,7 @@ TEMP_DIR = os.path.join(CURRENT_DIR, 'templates')
 TESTCASE_DIR = os.path.join(CURRENT_DIR, 'testcases')
 
 
-def load_xml_criteria(distance, speed2, testcaseID):
+def load_param_to_xml(distance, speed2, testcaseID):
     pos1 = (0, 0)
     # Create the jinja2 environment.
     # Notice the use of trim_blocks, which greatly helps control whitespace.
@@ -34,24 +34,25 @@ def load_xml_criteria(distance, speed2, testcaseID):
     return testcase_crit
 
 
-def generate_tcs(num_tc):
-    dist = []
-    speed = []
+def generate_xml_testcase(num_tc, dist, speed):
+    # dist = []
+    # speed = []
     #delete all old xml file
     filelist = [ f for f in os.listdir(TESTCASE_DIR) if f.endswith(".xml") ]
     for f in filelist:
         os.remove(os.path.join(TESTCASE_DIR, f))
     
     for i in range(num_tc):
-        temp_dist = random.randint(10, 60)
-        dist.append(temp_dist)
-        temp_speed = random.randint(10, 80)
-        speed.append(temp_speed)
+        # temp_dist = random.randint(10, 60)
+        # dist.append(temp_dist)
+        # temp_speed = random.randint(10, 80)
+        # speed.append(temp_speed)
 
         file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
         print ("file name",file_name)
 
-        xml_data = load_xml_criteria(temp_dist, temp_speed, i)
+        #xml_data = load_xml_criteria(temp_dist, temp_speed, i)
+        xml_data = load_param_to_xml(dist[i], speed[i], i)
         #print (xml_data)
         with open(file_name, 'w') as f:
             f.write(str(xml_data))
@@ -60,15 +61,11 @@ def generate_tcs(num_tc):
 
     return listTC
 
-
-if __name__ == "__main__":
-
+def run_TC_DriveBuild(num_tc)
     # generate xml file
-    num_tc = 10
-    generate_tcs(num_tc)
-
+   
     service = get_service()
-
+    result = list()
     # Send tests
     for i in range(num_tc):
         dbc_file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
@@ -95,3 +92,7 @@ if __name__ == "__main__":
         non_ego_simulation_thread.join()
 
         test_result = service.get_result(sid)
+        result.append(test_result)
+       
+    return result
+
