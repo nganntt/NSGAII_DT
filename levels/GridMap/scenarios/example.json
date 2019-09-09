@@ -1,0 +1,17 @@
+[
+    {
+        "authors": "BeamNGpy",
+        "description": null,
+        "difficulty": 0,
+        "name": "example",
+        "prefabs": [
+            "levels/GridMap/scenarios/example.prefab"
+        ],
+        "vehicles": {
+            "ego_vehicle": {
+                "playerUsable": true,
+                "startFocus": true
+            }
+        }
+    }
+]
