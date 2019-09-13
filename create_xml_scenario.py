@@ -13,8 +13,8 @@ from jinja2 import Environment, FileSystemLoader
 
 # Capture our current directory
 # print ("print current file",os.path.abspath(__file__))
-from AIExchangeService import get_service
-from aiExchangeMessages_pb2 import SimulationID, VehicleID
+from drivebuildclient.AIExchangeService import AIExchangeService
+from drivebuildclient.aiExchangeMessages_pb2 import SimulationID, VehicleID
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_DIR = os.path.join(CURRENT_DIR, 'templates')
@@ -65,7 +65,7 @@ def generate_xml_testcase(num_tc, dist, speed):
 def run_TC_DriveBuild(num_tc):
     # generate xml file
 
-    service = get_service()
+    service = AIExchangeService("defender.fim.uni-passau.de", 8383)
     result = list()
     # Send tests
     for i in range(num_tc):

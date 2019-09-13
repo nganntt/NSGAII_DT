@@ -1,3 +1,4 @@
+drivebuild-client
 flask
 jinja2
 protobuf
