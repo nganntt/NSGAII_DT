@@ -18,7 +18,7 @@ import pydotplus
 from sklearn.datasets import load_iris
 from sklearn import tree
 import collections
-from create_xml_scenario import generate_tcs
+from create_xml_scenario import generate_tcs, run_TC_DriveBuild, converse_result
 
 
 def estimate_critical(dist, speed):
@@ -57,6 +57,7 @@ def pop_to_data_DT(pop):
     
     
     result = run_TC_DriveBuild(len(pop))
+    biResult = converse_result(result)
     for i in rang(len(pop)):
         data.append((dist[i], speed[i],result[i]))
     return data

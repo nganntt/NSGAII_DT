@@ -29,7 +29,7 @@ import create_xml_scenario
 POS_FILE = "position.txt"
 ROT_FILE = "rotation.txt"
 
-def main(beamNG_path, num_gen, num_pop):
+def main(num_gen, num_pop):
     #run beamNG to collect data
     
     sys_output.print_star_end("Start the process of generation testcases with NSGAII_DT")
@@ -47,10 +47,6 @@ def main(beamNG_path, num_gen, num_pop):
     sys_output.print_star_end("End the process of generation testcases from NSGAII_DT")
 
 
-#example to run indiviudal and population
-#['96.72881317138672, -209.87376403808594, 0.20368465781211853,-0.3515154719352722, -0.9361792802810669, -0.0022529030684381723',
-# '74.01776123046875, -233.57073974609375, 0.20380012691020966,-0.9138180613517761, -0.40611740946769714, -0.002287991577759385'
-#, 38]
 
 
 def print_pop(pop):
@@ -344,7 +340,7 @@ def check_idx(list_idx, x):
 
 if __name__ == "__main__":
     
-    main(sys.argv[1],sys.argv[2],sys.argv[3])
+    main(sys.argv[2],sys.argv[3])
    
 
     

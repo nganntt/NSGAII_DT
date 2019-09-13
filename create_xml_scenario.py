@@ -96,3 +96,23 @@ def run_TC_DriveBuild(num_tc):
         result.append(test_result)
 
     return result
+
+    
+#UNKNOWN, SUCCEEDED, FAILED or CANCELLED
+def converse_result(result):
+    biResult_list = list()
+    biResult = -1
+    for item in result:
+        if item = "SUCCEEDED":
+            biResult = 1
+        elif item = "FAILED":
+            biResult = 0
+        else:
+            biResult = -1
+        
+        if biResult == -1:
+            print("\n The testcase couldn't run successfully \n")
+            return 0
+        biResult_list.append(biResult)
+    return biResult_list
+
