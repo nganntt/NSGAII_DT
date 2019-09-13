@@ -61,7 +61,7 @@ def generate_xml_testcase(num_tc, dist, speed):
 
     return listTC
 
-def run_TC_DriveBuild(num_tc)
+def run_TC_DriveBuild(num_tc):
     # generate xml file
    
     service = get_service()
