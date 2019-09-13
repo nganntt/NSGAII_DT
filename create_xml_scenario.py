@@ -103,9 +103,9 @@ def converse_result(result):
     biResult_list = list()
     biResult = -1
     for item in result:
-        if item = "SUCCEEDED":
+        if item == "SUCCEEDED":
             biResult = 1
-        elif item = "FAILED":
+        elif item == "FAILED":
             biResult = 0
         else:
             biResult = -1
