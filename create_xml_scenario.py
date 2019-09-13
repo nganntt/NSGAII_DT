@@ -37,11 +37,11 @@ def load_param_to_xml(distance, speed2, testcaseID):
 def generate_xml_testcase(num_tc, dist, speed):
     # dist = []
     # speed = []
-    #delete all old xml file
-    filelist = [ f for f in os.listdir(TESTCASE_DIR) if f.endswith(".xml") ]
+    # delete all old xml file
+    filelist = [f for f in os.listdir(TESTCASE_DIR) if f.endswith(".xml")]
     for f in filelist:
         os.remove(os.path.join(TESTCASE_DIR, f))
-    
+
     for i in range(num_tc):
         # temp_dist = random.randint(10, 60)
         # dist.append(temp_dist)
@@ -49,11 +49,11 @@ def generate_xml_testcase(num_tc, dist, speed):
         # speed.append(temp_speed)
 
         file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
-        print ("file name",file_name)
+        print("file name", file_name)
 
-        #xml_data = load_xml_criteria(temp_dist, temp_speed, i)
+        # xml_data = load_xml_criteria(temp_dist, temp_speed, i)
         xml_data = load_param_to_xml(dist[i], speed[i], i)
-        #print (xml_data)
+        # print (xml_data)
         with open(file_name, 'w') as f:
             f.write(str(xml_data))
 
@@ -61,9 +61,10 @@ def generate_xml_testcase(num_tc, dist, speed):
 
     return listTC
 
+
 def run_TC_DriveBuild(num_tc):
     # generate xml file
-   
+
     service = get_service()
     result = list()
     # Send tests
@@ -93,6 +94,5 @@ def run_TC_DriveBuild(num_tc):
 
         test_result = service.get_result(sid)
         result.append(test_result)
-       
-    return result
 
+    return result
