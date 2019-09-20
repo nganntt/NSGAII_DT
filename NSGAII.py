@@ -339,8 +339,9 @@ def check_idx(list_idx, x):
        
 
 if __name__ == "__main__":
-    
     main(sys.argv[1],sys.argv[2])
+else:
+    main(2, 10)
    
 
     
