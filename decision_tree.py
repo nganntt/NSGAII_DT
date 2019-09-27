@@ -18,7 +18,7 @@ import pydotplus
 from sklearn.datasets import load_iris
 from sklearn import tree
 import collections
-from create_xml_scenario import generate_tcs, run_TC_DriveBuild, converse_result
+from create_xml_scenario import generate_xml_testcase, run_TC_DriveBuild, converse_result
 
 
 def estimate_critical(dist, speed):

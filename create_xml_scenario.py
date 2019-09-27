@@ -97,7 +97,7 @@ def run_TC_DriveBuild(num_tc):
 
     return result
 
-    
+
 #UNKNOWN, SUCCEEDED, FAILED or CANCELLED
 def converse_result(result):
     biResult_list = list()
