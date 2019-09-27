@@ -51,7 +51,7 @@ def pop_to_data_DT(pop):
         dist.append(dist_tmp)
         speed.append(speed_tmp)
     # generate TC with XML file
-    generate_tcs(len(pop), dist, speed)
+    generate_xml_testcase(len(pop), dist, speed)
     
     #change result to 0 or 1 base on the result returns from DriveBuidl 
     
