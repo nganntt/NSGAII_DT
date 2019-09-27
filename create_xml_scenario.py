@@ -8,7 +8,7 @@
 import os
 import random
 from threading import Thread
-
+from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 # Capture our current directory
@@ -71,7 +71,7 @@ def run_TC_DriveBuild(num_tc):
     for i in range(num_tc):
         dbc_file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
         dbe_file_name = os.path.join(TEMP_DIR, "environmentA.dbe.xml")
-        sids = service.run_tests("admin", "admin", dbc_file_name, dbe_file_name)
+        sids = service.run_tests("admin", "admin", Path(dbc_file_name), Path(dbe_file_name))
 
         # Interact with a simulation
         if not sids:
