@@ -71,29 +71,23 @@ def run_TC_DriveBuild(num_tc):
     for i in range(num_tc):
         dbc_file_name = os.path.join(TESTCASE_DIR, "criteria" + str(i) + ".dbc.xml")
         dbe_file_name = os.path.join(TEMP_DIR, "environmentA.dbe.xml")
-        sids = service.run_tests("admin", "admin", Path(dbc_file_name), Path(dbe_file_name))
+        submission_result = service.run_tests("NguyenThiThuNgan", "z.#e4V7Z", Path(dbc_file_name), Path(dbe_file_name))
 
         # Interact with a simulation
-        if not sids:
-            exit(1)
-        sid = SimulationID()
-        sid.sid = sids.sids[0]
-
-        ego_vid = VehicleID()
-        ego_vid.vid = "ego"
-        ego_vehicle_simulation_thread = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
-        ego_vehicle_simulation_thread.start()
-
-        non_ego_vid = VehicleID()
-        non_ego_vid.vid = "nonEgo"
-        non_ego_simulation_thread = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
-        non_ego_simulation_thread.start()
-
-        ego_vehicle_simulation_thread.join()
-        non_ego_simulation_thread.join()
-
-        test_result = service.get_result(sid)
-        result.append(test_result)
+        #if submission_result and submission_result.submissions:
+        for test_name, sid in submission_result.submissions.items():
+            ego_requests = ["egoPosition", "egoSpeed", "egoSteeringAngle", "egoFrontCamera", "egoLidar", "egoLaneDist"]
+            non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
+                                "nonEgoLaneDist"]
+            ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, "ego", ego_requests))
+            ego_vehicle.start()
+            non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, "nonEgo", non_ego_requests))
+            non_ego_vehicle.start()
+            ego_vehicle.join()
+            non_ego_vehicle.join()
+        
+            test_result = service.get_result(sid)
+            result.append(test_result)
 
     return result
 
