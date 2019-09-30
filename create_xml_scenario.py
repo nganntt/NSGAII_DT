@@ -79,9 +79,17 @@ def run_TC_DriveBuild(num_tc):
             ego_requests = ["egoPosition", "egoSpeed", "egoSteeringAngle", "egoFrontCamera", "egoLidar", "egoLaneDist"]
             non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
                                 "nonEgoLaneDist"]
-            ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, "ego", ego_requests))
+                                
+                                
+            ego_vid = VehicleID()
+            ego_vid.vid = "ego"
+            ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
             ego_vehicle.start()
-            non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, "nonEgo", non_ego_requests))
+            
+            
+            non_ego_vid = VehicleID()
+            non_ego_vid.vid = "nonEgo"
+            non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
             non_ego_vehicle.start()
             ego_vehicle.join()
             non_ego_vehicle.join()
