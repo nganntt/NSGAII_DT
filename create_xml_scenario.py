@@ -62,6 +62,22 @@ def generate_xml_testcase(num_tc, dist, speed):
     return listTC
 
 
+def start(service: AIExchangeService, sid: SimulationID, vid: VehicleID) -> None:
+        while True:
+            print(sid.sid + ": Test status: " + service.get_status(sid))
+            # Wait for the simulation to request this AI
+            sim_state = service.wait_for_simulator_request(sid, vid)
+            if sim_state is SimStateResponse.SimState.RUNNING:  # Check whether simulation is still running
+                 # Do what you have to do
+            else:
+                print(sid.sid + ": The simulation is not running anymore (Final state: "
+                      + SimStateResponse.SimState.Name(sim_state) + ").")
+                print(sid.sid + ": Final test result: " + service.get_result(sid))
+                # Clean up everything you have to
+                break    
+    
+    
+
 def run_TC_DriveBuild(num_tc):
     # generate xml file
 
@@ -83,19 +99,22 @@ def run_TC_DriveBuild(num_tc):
                                 
             ego_vid = VehicleID()
             ego_vid.vid = "ego"
-            ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
+            #ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
+            ego_vehicle = Thread(target=start, args=(service, sid, ego_vid))
             ego_vehicle.start()
             
             
             non_ego_vid = VehicleID()
             non_ego_vid.vid = "nonEgo"
-            non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
+            #non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
+            non_ego_vehicle = Thread(target=start, args=(service, sid, non_ego_vid))
             non_ego_vehicle.start()
             ego_vehicle.join()
             non_ego_vehicle.join()
         
             test_result = service.get_result(sid)
             result.append(test_result)
+            
 
     return result
 
