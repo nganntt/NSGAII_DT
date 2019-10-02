@@ -50,7 +50,11 @@
     </precondition>-->
 
     <success> <!-- If these criteria are met the test is considered successful -->
-        <scArea participant="ego" points="(10,90);(10,160);(30,160);(30,90)"/>
+        <or>
+            <scArea participant="ego" points="(10,90);(10,160);(30,160);(30,90)"/>
+            <scArea participant="nonEgo" points="(10,90);(10,160);(30,160);(30,90)"/>
+        <or>
+        
     </success>
 
     <failure> <!-- If these criteria are met the test is considered failed -->
