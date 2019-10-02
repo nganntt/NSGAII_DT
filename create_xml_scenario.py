@@ -15,6 +15,7 @@ from jinja2 import Environment, FileSystemLoader
 # print ("print current file",os.path.abspath(__file__))
 from drivebuildclient.AIExchangeService import AIExchangeService
 from drivebuildclient.aiExchangeMessages_pb2 import SimulationID, VehicleID
+from drivebuildclient.aiExchangeMessages_pb2 import SimStateResponse
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_DIR = os.path.join(CURRENT_DIR, 'templates')
