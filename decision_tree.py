@@ -181,9 +181,6 @@ def check_dataFrame(df):
     
     data_frame = pd.concat([df,df1],axis=1,sort=False)
     
-    
-    
-    
     return data_frame
 
 def file_name1():

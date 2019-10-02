@@ -68,7 +68,7 @@ def start(service: AIExchangeService, sid: SimulationID, vid: VehicleID) -> None
             # Wait for the simulation to request this AI
             sim_state = service.wait_for_simulator_request(sid, vid)
             if sim_state is SimStateResponse.SimState.RUNNING:  # Check whether simulation is still running
-                 # Do what you have to do
+                 pass
             else:
                 print(sid.sid + ": The simulation is not running anymore (Final state: "
                       + SimStateResponse.SimState.Name(sim_state) + ").")
@@ -96,13 +96,11 @@ def run_TC_DriveBuild(num_tc):
             non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
                                 "nonEgoLaneDist"]
                                 
-                                
             ego_vid = VehicleID()
             ego_vid.vid = "ego"
             #ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
             ego_vehicle = Thread(target=start, args=(service, sid, ego_vid))
             ego_vehicle.start()
-            
             
             non_ego_vid = VehicleID()
             non_ego_vid.vid = "nonEgo"
