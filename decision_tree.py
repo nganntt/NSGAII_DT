@@ -58,7 +58,7 @@ def pop_to_data_DT(pop):
     
     result = run_TC_DriveBuild(len(pop))
     biResult = converse_result(result)
-    for i in rang(len(pop)):
+    for i in range(len(pop)):
         data.append((dist[i], speed[i],result[i]))
     return data
 
