@@ -8,9 +8,12 @@
     <lanes>
         <lane> <!-- Definition of a single lane -->
             <laneSegment x="0" y="0" width="5"/> <!-- First point of the lane -->
-            <laneSegment x="0" y="50" width="5"/> <!-- Second point of the lane -->
-            <laneSegment x="0" y="100" width="5"/>
+            <laneSegment x="0" y="60" width="5"/> <!-- Second point of the lane -->
+            <laneSegment x="0" y="80" width="5"/>
             <laneSegment x="0" y="120" width="5"/>
+            <laneSegment x="0" y="150" width="5"/>
+            <laneSegment x="0" y="200" width="5"/>
+            <laneSegment x="0" y="250" width="5"/>
         </lane>
        
     </lanes>
