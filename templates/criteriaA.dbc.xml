@@ -22,8 +22,8 @@
             <movement> <!-- Definition of the movement of this participant -->
                 <waypoint x="0" y="0" movementMode="AUTONOMOUS" tolerance="1"/> <!-- A waypoint has a position and a diameter/tolerance and allows to change the current movement mode -->
                 <waypoint x="0" y="60" movementMode="MANUAL" tolerance="1"/>
-                <waypoint x="0" y="80" movementMode="MANUAL" tolerance="1"/>
                 <waypoint x="0" y="150" movementMode="MANUAL" tolerance="1"/>
+                
             </movement>
         </participant>
         <participant id="nonEgo" model="ETK800">
@@ -37,7 +37,7 @@
             </ai>
             <movement>
                  <waypoint x="0" y="{{pos2y}}" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}"/>
-                <waypoint x="0" y="80" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}" />
+                <waypoint x="0" y="100" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}" />
                 <waypoint x="0" y="150" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}"/>
                 
             </movement>
