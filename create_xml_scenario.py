@@ -5,6 +5,7 @@
 # We now assume we have a file in the same dir as this one called
 # test_template.html
 #
+from typing import List
 import os
 import random
 from threading import Thread
