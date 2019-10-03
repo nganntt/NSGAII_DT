@@ -76,7 +76,8 @@ def gen_pop(num_ind):
     dist = []
     speed = []
     for _ in range(num_ind):
-        temp_dist = random.randint(10, 60)
+        #temp_dist = random.randint(10, 60) #old setting in beamNG.research
+        temp_dist = random.randint(10, 200)
         dist.append(temp_dist)
         temp_speed = random.randint(10, 80)
         speed.append(temp_speed)

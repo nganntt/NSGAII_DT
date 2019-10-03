@@ -21,9 +21,12 @@
             </ai>
             <movement> <!-- Definition of the movement of this participant -->
                 <waypoint x="0" y="0" movementMode="AUTONOMOUS" tolerance="1"/> <!-- A waypoint has a position and a diameter/tolerance and allows to change the current movement mode -->
-                <waypoint x="0" y="60" movementMode="MANUAL" tolerance="1"/>
                 <waypoint x="0" y="100" movementMode="MANUAL" tolerance="1"/>
-                <waypoint x="0" y="150" movementMode="MANUAL" tolerance="1"/>
+                <waypoint x="0" y="200" movementMode="MANUAL" tolerance="1"/>
+                <waypoint x="0" y="300" movementMode="MANUAL" tolerance="1"/>
+                <waypoint x="0" y="400" movementMode="MANUAL" tolerance="1"/>
+                <waypoint x="0" y="500" movementMode="MANUAL" tolerance="1"/>
+                
                 
             </movement>
         </participant>
@@ -37,9 +40,10 @@
                 <laneCenterDistance id="nonEgoLaneDist"/>
             </ai>
             <movement>
-                 <waypoint x="0" y="{{pos2y}}" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}"/>
-                <waypoint x="0" y="100" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}" />
-                <waypoint x="0" y="150" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}"/>
+                <waypoint x="0" y="{{pos2y}}" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}"/>
+                <waypoint x="0" y="300" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}" />
+                <waypoint x="0" y="400" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}"/>
+                <waypoint x="0" y="500" movementMode="MANUAL" tolerance="1" speedLimit= "{{speedcar2}}" />
                 
             </movement>
         </participant>
@@ -52,8 +56,8 @@
 
     <success> <!-- If these criteria are met the test is considered successful -->
         <or>
-            <scArea participant="ego" points="(10,90);(10,160);(30,160);(30,90)"/>
-            <scArea participant="nonEgo" points="(10,90);(10,160);(30,160);(30,90)"/>
+            <scArea participant="ego" points="(10,510);(10,560);(30,560);(30,510)"/>
+            <scArea participant="nonEgo" points="(10,510);(10,560);(30,560);(30,510)"/>
         </or>
         
     </success>
