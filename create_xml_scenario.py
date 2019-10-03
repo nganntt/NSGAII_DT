@@ -64,13 +64,18 @@ def generate_xml_testcase(num_tc, dist, speed):
     return listTC
 
 
-def start(service: AIExchangeService, sid: SimulationID, vid: VehicleID) -> None:
+def start(service: AIExchangeService, sid: SimulationID, vid: VehicleID, requests: List[str]) -> None:
         while True:
             print(sid.sid + ": Test status: " + service.get_status(sid))
             # Wait for the simulation to request this AI
             sim_state = service.wait_for_simulator_request(sid, vid)
+            print(": Request data")
             if sim_state is SimStateResponse.SimState.RUNNING:  # Check whether simulation is still running
-                 pass
+                request= DataRequest()
+                request.request_ids.extend(requests)
+                data= service.request_data(sid, vid, request)  # request()
+                print (data)
+                 
             else:
                 print(sid.sid + ": The simulation is not running anymore (Final state: "
                       + SimStateResponse.SimState.Name(sim_state) + ").")
@@ -100,13 +105,13 @@ def run_TC_DriveBuild(num_tc):
             ego_vid = VehicleID()
             ego_vid.vid = "ego"
             #ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
-            ego_vehicle = Thread(target=start, args=(service, sid, ego_vid))
+            ego_vehicle = Thread(target=start, args=(service, sid, ego_vid, ego_requests))
             ego_vehicle.start()
             
             non_ego_vid = VehicleID()
             non_ego_vid.vid = "nonEgo"
             #non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
-            non_ego_vehicle = Thread(target=start, args=(service, sid, non_ego_vid))
+            non_ego_vehicle = Thread(target=start, args=(service, sid, non_ego_vid, non_ego_requests))
             non_ego_vehicle.start()
             ego_vehicle.join()
             non_ego_vehicle.join()
@@ -114,17 +119,7 @@ def run_TC_DriveBuild(num_tc):
             test_result = service.get_result(sid)
             
             result.append(test_result)
-            print(": Request data")
-            print("\n data of Ego:\n")
-            request_ego = DataRequest()
-            request_ego.request_ids.extend(ego_requests)
-            data_ego = service.request_data(sid, ego_vid, request_ego)  # request()
-            print (data_ego)
-            print("\n data of NonEgo:\n")
-            request_no_nego = DataRequest()
-            request_no_nego.request_ids.extend(non_ego_requests)
-            data_non_ego = service.request_data(sid, non_ego_vid, request_no_nego)  # request()
-            print (data_non_ego)
+            
 
     return result
 
