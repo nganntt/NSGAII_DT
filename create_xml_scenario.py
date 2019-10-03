@@ -15,7 +15,8 @@ from jinja2 import Environment, FileSystemLoader
 # print ("print current file",os.path.abspath(__file__))
 from drivebuildclient.AIExchangeService import AIExchangeService
 from drivebuildclient.aiExchangeMessages_pb2 import SimulationID, VehicleID
-from drivebuildclient.aiExchangeMessages_pb2 import SimStateResponse
+from drivebuildclient.aiExchangeMessages_pb2 import SimStateResponse, DataRequest
+
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_DIR = os.path.join(CURRENT_DIR, 'templates')
@@ -112,8 +113,19 @@ def run_TC_DriveBuild(num_tc):
             non_ego_vehicle.join()
         
             test_result = service.get_result(sid)
-            result.append(test_result)
             
+            result.append(test_result)
+            print(vid + ": Request data")
+            print("\n data of Ego:\n")
+            request_ego = DataRequest()
+            request_ego.request_ids.extend(ego_requests)
+            data_ego = service.request_data(sid, ego_vid, request_ego)  # request()
+            print (data_ego))
+            print("\n data of NonEgo:\n")
+            request_no_nego = DataRequest()
+            request_no_nego.request_ids.extend(non_ego_requests)
+            data_non_ego = service.request_data(sid, non_ego_vid, request_no_nego)  # request()
+            print (data_non_ego))
 
     return result
 
@@ -136,3 +148,11 @@ def converse_result(result):
         biResult_list.append(biResult)
     return biResult_list
 
+
+# num_tc = 1
+# dist = [100]
+# speed = [150]
+# generate_xml_testcase(num_tc, dist, speed)
+# run_TC_DriveBuild(num_tc)
+    
+    
