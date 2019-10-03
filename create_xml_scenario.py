@@ -78,7 +78,6 @@ def start(service: AIExchangeService, sid: SimulationID, vid: VehicleID) -> None
                 # Clean up everything you have to
                 break    
     
-    
 
 def run_TC_DriveBuild(num_tc):
     # generate xml file
@@ -115,7 +114,7 @@ def run_TC_DriveBuild(num_tc):
             test_result = service.get_result(sid)
             
             result.append(test_result)
-            print(vid + ": Request data")
+            print(": Request data")
             print("\n data of Ego:\n")
             request_ego = DataRequest()
             request_ego.request_ids.extend(ego_requests)
