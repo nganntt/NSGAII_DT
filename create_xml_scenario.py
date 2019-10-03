@@ -120,12 +120,12 @@ def run_TC_DriveBuild(num_tc):
             request_ego = DataRequest()
             request_ego.request_ids.extend(ego_requests)
             data_ego = service.request_data(sid, ego_vid, request_ego)  # request()
-            print (data_ego))
+            print (data_ego)
             print("\n data of NonEgo:\n")
             request_no_nego = DataRequest()
             request_no_nego.request_ids.extend(non_ego_requests)
             data_non_ego = service.request_data(sid, non_ego_vid, request_no_nego)  # request()
-            print (data_non_ego))
+            print (data_non_ego)
 
     return result
 
