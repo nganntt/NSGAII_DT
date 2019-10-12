@@ -76,7 +76,8 @@ def gen_pop(num_ind):
     dist = []
     speed = []
     for _ in range(num_ind):
-        temp_dist = random.randint(10, 60)
+        #temp_dist = random.randint(10, 60) #old setting in beamNG.research
+        temp_dist = random.randint(10, 200)
         dist.append(temp_dist)
         temp_speed = random.randint(10, 80)
         speed.append(temp_speed)
@@ -110,7 +111,7 @@ def nsga2(number_gen, num_pop):
     def get_scenario_State():
     
          
-        temp_dist = random.randint(10, 60)
+        temp_dist = random.randint(10, 200)
         
         temp_speed = random.randint(10, 80)
         
@@ -215,7 +216,6 @@ def nsga2(number_gen, num_pop):
 
     # This is just to assign the crowding distance to the individuals
     pop = toolbox.select(pop, len(pop))
-    print("/n First generation: /n")
     print_pop(pop)
     
     #Intergration DT in select population
@@ -226,10 +226,10 @@ def nsga2(number_gen, num_pop):
     print(str( sys_output.trace_func(str(file_name()), str(sys._getframe().f_code.co_name))))
     for gen in range(1, NGEN+1):
         # Vary the population
-        sys_output.print_title("ENTER LOOP OF GENERATION WITH DECISION TREE:  " + str(gen))
+        sys_output.print_title("ENTER LOOP OF GENERATION WITH DECISION TREE: Generation  " + str(gen))
         sys_output.print_sub_tit("1. Select individuals from Decision Tree")
 
-        # select population from decision tree
+        # select population from decision tree( The testcases are run on BuildDrive)
         pop_DT = select_pop_DT(pop)
         print ("\n\n Population is select for generation: ")
         print_pop(pop_DT[1])
@@ -288,7 +288,7 @@ def select_pop_DT(pop):
     
     """
     new_pop = []
-    #change estimate funciton  --> Run DriveBuild in decision_tree.py
+    #run population on DriveBuild
     data = decision_tree.convert_dataFrame(pop)   
     now = datetime.now()
     date_time = now.strftime("%m_%d_%Y__%H%M%S")
@@ -297,8 +297,7 @@ def select_pop_DT(pop):
 
     data.to_csv(r'decision_tree_data.cvs')
     print("\n Data to build the tree is save in " , file_name_cvs )
-    print("\n\n \n Run test case on DriveBuild to get the results for failure for success of each testcase \n \
-            This will be updated later \n \n \n")
+   
     
     print("\nc. Train decision tree and select critical events")
     #get leaf which contains the critical situations

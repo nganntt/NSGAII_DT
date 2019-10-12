@@ -58,44 +58,10 @@ def pop_to_data_DT(pop):
     
     result = run_TC_DriveBuild(len(pop))
     biResult = converse_result(result)
-    for i in rang(len(pop)):
+    for i in range(len(pop)):
         data.append((dist[i], speed[i],result[i]))
     return data
 
-
-
-
-
-# def estimate_critical(dist, speed):
-    # """ 
-    # This function will calculate whether there is collision between two car1_pos_rot
-    # There are two condition make the crash scenario
-        # 1- Distance between two car smaller than 20 (or in range (10,30))
-        # 2. Speed of second car is larger than 20km/h
-    # """
-    # if dist < 20 and speed > 20:
-        # return 1
-    # else:
-        # return 0
-
-
-# def pop_to_data_DT(pop):
-    # """
-    # The function calulates the critical event with input of populuation
-    # each indiviual is list of [car1_pos_rot,car1_pos_rot, speed car2]
-    # The function return a set of (distance, speed, label) of each individual
-    # Return result a list of tuples(dist, speed, collistion_state): (5.520236587666433, 96, 1)
-    # """
-    # data = []
-
-    # for ind in pop:
-        # #dist = generate_data.distance_two_Car(ind[0], ind[1])
-        # dist = ind[1][1]
-        # speed = ind[2]
-        # state_scenario = estimate_critical(dist, speed)
-        # data.append((dist,speed,state_scenario))
-    
-    # return data
 
 def encode_dist(dist):
     """
@@ -180,9 +146,6 @@ def check_dataFrame(df):
         df1[colume] = np.zeros(df.shape[0])
     
     data_frame = pd.concat([df,df1],axis=1,sort=False)
-    
-    
-    
     
     return data_frame
 

@@ -5,6 +5,7 @@
 # We now assume we have a file in the same dir as this one called
 # test_template.html
 #
+from typing import List
 import os
 import random
 from threading import Thread
@@ -15,6 +16,8 @@ from jinja2 import Environment, FileSystemLoader
 # print ("print current file",os.path.abspath(__file__))
 from drivebuildclient.AIExchangeService import AIExchangeService
 from drivebuildclient.aiExchangeMessages_pb2 import SimulationID, VehicleID
+from drivebuildclient.aiExchangeMessages_pb2 import SimStateResponse, DataRequest
+
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_DIR = os.path.join(CURRENT_DIR, 'templates')
@@ -62,6 +65,37 @@ def generate_xml_testcase(num_tc, dist, speed):
     return listTC
 
 
+def start(service: AIExchangeService, sid: SimulationID, vid: VehicleID, requests: List[str]) -> None:
+        while True:
+            print(sid.sid + ": Test status: " + service.get_status(sid))
+            # Wait for the simulation to request this AI
+            sim_state = service.wait_for_simulator_request(sid, vid)
+            print(": Request data")
+            if sim_state is SimStateResponse.SimState.RUNNING:  # Check whether simulation is still running
+                request= DataRequest()
+                request.request_ids.extend(requests)
+                data= service.request_data(sid, vid, request)  # request()
+                print (data)
+                 
+            else:
+                print(sid.sid + ": The simulation is not running anymore (Final state: "
+                      + SimStateResponse.SimState.Name(sim_state) + ").")
+                print(sid.sid + ": Final test result: " + service.get_result(sid))
+                # Clean up everything you have to
+                break    
+
+                
+# def start(sid: SimulationID, vid: VehicleID) -> None:
+    # from drivebuildclient.aiExchangeMessages_pb2 import SimStateResponse, DataRequest
+    # request = DataRequest()
+    # request.request_ids.extend([vid.vid + "Position"])
+    # while True:
+        # sim_state = service.wait_for_simulator_request(sid, vid)
+        # data = service.request_data(sid, vid, request)
+        # print(data)
+        # if sim_state != SimStateResponse.SimState.RUNNING:
+            # break
+                
 def run_TC_DriveBuild(num_tc):
     # generate xml file
 
@@ -74,28 +108,36 @@ def run_TC_DriveBuild(num_tc):
         submission_result = service.run_tests("NguyenThiThuNgan", "z.#e4V7Z", Path(dbc_file_name), Path(dbe_file_name))
 
         # Interact with a simulation
-        #if submission_result and submission_result.submissions:
-        for test_name, sid in submission_result.submissions.items():
-            ego_requests = ["egoPosition", "egoSpeed", "egoSteeringAngle", "egoFrontCamera", "egoLidar", "egoLaneDist"]
-            non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
-                                "nonEgoLaneDist"]
-                                
-                                
-            ego_vid = VehicleID()
-            ego_vid.vid = "ego"
-            ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
-            ego_vehicle.start()
+        if submission_result and submission_result.submissions:
+            for test_name, sid in submission_result.submissions.items():
+                ego_requests = ["egoPosition", "egoSpeed", "egoSteeringAngle", "egoFrontCamera", "egoLidar", "egoLaneDist"]
+                non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
+                                    "nonEgoLaneDist"]
+                                    
+                ego_vid = VehicleID()
+                ego_vid.vid = "ego"
+                #ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
+                ego_vehicle = Thread(target=start, args=(service, sid, ego_vid, ego_requests))
+                ego_vehicle.start()
+                
+                non_ego_vid = VehicleID()
+                non_ego_vid.vid = "nonEgo"
+                #non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
+                non_ego_vehicle = Thread(target=start, args=(service, sid, non_ego_vid, non_ego_requests))
+                non_ego_vehicle.start()
+                ego_vehicle.join()
+                non_ego_vehicle.join()
+                
+                test_result = service.get_result(sid)
+                print ("\n Result of testcase: ", test_result)
+                result.append(test_result)
+         
+        else:
+            print("Submitted tests were invalid.")
+            print(submission_result.message.message)
             
-            
-            non_ego_vid = VehicleID()
-            non_ego_vid.vid = "nonEgo"
-            non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
-            non_ego_vehicle.start()
-            ego_vehicle.join()
-            non_ego_vehicle.join()
         
-            test_result = service.get_result(sid)
-            result.append(test_result)
+            
 
     return result
 
@@ -118,3 +160,11 @@ def converse_result(result):
         biResult_list.append(biResult)
     return biResult_list
 
+
+# num_tc = 1
+# dist = [100]
+# speed = [150]
+# generate_xml_testcase(num_tc, dist, speed)
+# run_TC_DriveBuild(num_tc)
+    
+    
