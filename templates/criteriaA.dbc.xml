@@ -4,7 +4,7 @@
           xsi:schemaLocation="http://drivebuild.com ../drivebuild.xsd">
     <author>Ngan Nguyen</author>
     <version>1</version>
-    <name>{{tcid}}</name>
+    <name>testcase A</name>
     <environment>environment.dbe.xml</environment>
     <stepsPerSecond>10</stepsPerSecond> <!-- Defines in how many steps the simulation divides each second -->
     <aiFrequency>50
