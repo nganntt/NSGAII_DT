@@ -29,7 +29,7 @@
             </movement>
         </participant>
         <participant id="nonEgo" model="ETK800">
-            <initialState x="{{pos2x}}" y="{{pos2y}} movementMode="TRAINING" orientation="90"/>
+            <initialState x="{{pos2x}}" y="{{pos2y}}" movementMode="TRAINING" orientation="90"/>
             <ai>
                 <position id="nonEgoPosition"/>
                 <speed id="nonEgoSpeed"/>
