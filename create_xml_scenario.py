@@ -127,14 +127,16 @@ def run_TC_DriveBuild(num_tc):
                 non_ego_vehicle.start()
                 ego_vehicle.join()
                 non_ego_vehicle.join()
+                
+                test_result = service.get_result(sid)
+                print ("\n Result of testcase: ", test_result)
+                result.append(test_result)
          
-    else:
-        print("Submitted tests were invalid.")
-        print(submission_result.message.message)
-        
-            test_result = service.get_result(sid)
+        else:
+            print("Submitted tests were invalid.")
+            print(submission_result.message.message)
             
-            result.append(test_result)
+        
             
 
     return result
