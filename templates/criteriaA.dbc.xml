@@ -5,7 +5,7 @@
     <author>Ngan Nguyen</author>
     <version>1</version>
     <name>testcase A</name>
-    <environment>environment.dbe.xml</environment>
+    <environment>environmentA.dbe.xml</environment>
     <stepsPerSecond>10</stepsPerSecond> <!-- Defines in how many steps the simulation divides each second -->
     <aiFrequency>50
     </aiFrequency> <!-- Defines how many steps to simulate before requesting AIs and cars in TRAINING mode -->
