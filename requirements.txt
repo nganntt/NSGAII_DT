@@ -2,3 +2,8 @@ drivebuild-client
 flask
 jinja2
 protobuf
+deap
+scipym pandas
+sklearn
+pydotplus
+graphviz
