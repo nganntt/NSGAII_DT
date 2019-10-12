@@ -83,8 +83,19 @@ def start(service: AIExchangeService, sid: SimulationID, vid: VehicleID, request
                 print(sid.sid + ": Final test result: " + service.get_result(sid))
                 # Clean up everything you have to
                 break    
-    
 
+                
+# def start(sid: SimulationID, vid: VehicleID) -> None:
+    # from drivebuildclient.aiExchangeMessages_pb2 import SimStateResponse, DataRequest
+    # request = DataRequest()
+    # request.request_ids.extend([vid.vid + "Position"])
+    # while True:
+        # sim_state = service.wait_for_simulator_request(sid, vid)
+        # data = service.request_data(sid, vid, request)
+        # print(data)
+        # if sim_state != SimStateResponse.SimState.RUNNING:
+            # break
+                
 def run_TC_DriveBuild(num_tc):
     # generate xml file
 
@@ -97,25 +108,29 @@ def run_TC_DriveBuild(num_tc):
         submission_result = service.run_tests("NguyenThiThuNgan", "z.#e4V7Z", Path(dbc_file_name), Path(dbe_file_name))
 
         # Interact with a simulation
-        #if submission_result and submission_result.submissions:
-        for test_name, sid in submission_result.submissions.items():
-            ego_requests = ["egoPosition", "egoSpeed", "egoSteeringAngle", "egoFrontCamera", "egoLidar", "egoLaneDist"]
-            non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
-                                "nonEgoLaneDist"]
-                                
-            ego_vid = VehicleID()
-            ego_vid.vid = "ego"
-            #ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
-            ego_vehicle = Thread(target=start, args=(service, sid, ego_vid, ego_requests))
-            ego_vehicle.start()
-            
-            non_ego_vid = VehicleID()
-            non_ego_vid.vid = "nonEgo"
-            #non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
-            non_ego_vehicle = Thread(target=start, args=(service, sid, non_ego_vid, non_ego_requests))
-            non_ego_vehicle.start()
-            ego_vehicle.join()
-            non_ego_vehicle.join()
+        if submission_result and submission_result.submissions:
+            for test_name, sid in submission_result.submissions.items():
+                ego_requests = ["egoPosition", "egoSpeed", "egoSteeringAngle", "egoFrontCamera", "egoLidar", "egoLaneDist"]
+                non_ego_requests = ["nonEgoPosition", "nonEgoSpeed", "nonEgoSteeringAngle", "nonEgoLeftCamera", "nonEgoLidar",
+                                    "nonEgoLaneDist"]
+                                    
+                ego_vid = VehicleID()
+                ego_vid.vid = "ego"
+                #ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, ego_vid))
+                ego_vehicle = Thread(target=start, args=(service, sid, ego_vid, ego_requests))
+                ego_vehicle.start()
+                
+                non_ego_vid = VehicleID()
+                non_ego_vid.vid = "nonEgo"
+                #non_ego_vehicle = Thread(target=service.wait_for_simulator_request, args=(sid, non_ego_vid))
+                non_ego_vehicle = Thread(target=start, args=(service, sid, non_ego_vid, non_ego_requests))
+                non_ego_vehicle.start()
+                ego_vehicle.join()
+                non_ego_vehicle.join()
+         
+    else:
+        print("Submitted tests were invalid.")
+        print(submission_result.message.message)
         
             test_result = service.get_result(sid)
             
