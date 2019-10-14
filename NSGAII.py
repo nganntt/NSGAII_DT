@@ -58,7 +58,7 @@ def print_pop(pop):
 def file_name():
     frame = inspect.stack()[1]
     module = inspect.getmodule(frame[0])
-    filename = module.__file__
+    filename = "NSGAII.py"
     return filename
 
     
@@ -340,7 +340,7 @@ def check_idx(list_idx, x):
 if __name__ == "__main__":
     main(sys.argv[1],sys.argv[2])
 else:
-    main(2, 10)
+    main(1, 3)
    
 
     
