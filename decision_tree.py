@@ -225,7 +225,7 @@ def get_critical_sample_DT(df):
     #clf = clf.fit(X_train,y_train)
     
     clf = clf.fit(X,y)
-    visualize_data(clf,feature_name)
+    # visualize_data(clf,feature_name)
     n_nodes = clf.tree_.node_count
    
     children_left = clf.tree_.children_left
