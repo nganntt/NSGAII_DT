@@ -1,3 +1,5 @@
+from os.path import dirname, join
+
 import sys_output
 import generate_data
 import pandas as pd
@@ -5,8 +7,6 @@ import numpy as np
 import re
 import os
 from datetime import datetime
-
-from NSGAII import file_name
 
 from sklearn.tree import DecisionTreeClassifier # Import Decision Tree Classifier
 from sklearn.model_selection import train_test_split # Import train_test_split function
@@ -225,7 +225,7 @@ def get_critical_sample_DT(df):
     #clf = clf.fit(X_train,y_train)
     
     clf = clf.fit(X,y)
-    visualize_data(clf,feature_name)
+    # visualize_data(clf,feature_name)
     n_nodes = clf.tree_.node_count
    
     children_left = clf.tree_.children_left
@@ -300,12 +300,12 @@ def visualize_data (clf,data_feature_names):
             dest.set_fillcolor(colors[i])
 
     #save tree
-    path_dir = os.getcwd()   
-    now = datetime.now()    
+    now = datetime.now()
     date_time = now.strftime("%m_%d_%Y__%H%M%S")
-    
-    graph.write_png(path_dir +"\store\\tree_" + date_time+".png")
-    sys_output.print_sub_tit("The graph of tree is save in " + path_dir +"\store\\tree_" + date_time+".png" )
+
+    file_path = join(dirname(__file__), "store" + "tree_" + date_time+".png")
+    graph.write_png(file_path)
+    sys_output.print_sub_tit("The graph of tree is save in " + file_path)
 
     
 def get_rules(dtc, df):
